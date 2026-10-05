@@ -417,7 +417,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.26335, y: 0.17615998, z: -0.95656}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -425,7 +425,7 @@ Transform:
   - {fileID: 215964151}
   - {fileID: 1171583457}
   m_Father: {fileID: 1540496266}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,7 +983,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -1001,11 +1001,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FpsPlayer
   MouseSense: 5
-  ySpeed: 0
-  pitch: 0
-  yaw: 0
+  Pitch: 0
+  Yaw: 0
+  MoveSpeed: 5
   Camera: {fileID: 330585543}
   View: {fileID: 330585546}
+  CurrentWeapon: 0
+  BG: {fileID: 532204654}
 --- !u!1 &1777472803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,7 +1114,7 @@ Transform:
   m_GameObject: {fileID: 1777472803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.06, y: 1.05, z: -5.16}
+  m_LocalPosition: {x: 0.06, y: 1.05, z: 4.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1183,9 +1185,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1171583457}
     m_Modifications:
+    - target: {fileID: 305879609137932568, guid: 87163328c965505428863bf305151747, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 305879609137932570, guid: 87163328c965505428863bf305151747, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 305879609137932572, guid: 87163328c965505428863bf305151747, type: 3}
       propertyPath: m_Name
       value: AK74 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 305879609137932572, guid: 87163328c965505428863bf305151747, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 305879609137932574, guid: 87163328c965505428863bf305151747, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 305879609137968444, guid: 87163328c965505428863bf305151747, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1246,6 +1264,10 @@ PrefabInstance:
     - target: {fileID: 3095012452730857518, guid: 87163328c965505428863bf305151747, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785719953955097227, guid: 87163328c965505428863bf305151747, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
