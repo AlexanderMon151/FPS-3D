@@ -6,13 +6,18 @@ public class BulletGun : MonoBehaviour
 {
    public Transform BulletPoint;
     public GameObject BulletPrefab;
-
     public List<GameObject> Bullets;
     public bool TestShoot;
+
+    public float ShootCoolDown = 0.2f;
+    public float ShootDuration = 0.1f;
+
+    private float NextShootTime, ShootHideTIme;
 
     private void Awake()
     {
         PopulateBullets();
+        gameObject.SetActive(false);
     }
 
     void PopulateBullets()
@@ -28,16 +33,23 @@ public class BulletGun : MonoBehaviour
     }
     public void Shoot()
     {
-        
+
+        if (!isActiveAndEnabled || Time.time < NextShootTime)
+            return;
+
+        NextShootTime = Time.time + ShootCoolDown;
+
+
         foreach (GameObject bullet in Bullets)
         {
-            if (!bullet.activeInHierarchy)
-            {
-                bullet.transform.position = BulletPoint.position;
-                bullet.SetActive(true);
-                Debug.Log("BANG BANG");
-                break;
-            }
+        if (!bullet.activeInHierarchy)
+        {
+        bullet.transform.position = BulletPoint.position;
+        bullet.SetActive(true);
+        Debug.Log("BANG BANG");
+        break;
+        }
+
         }
     }
 }
