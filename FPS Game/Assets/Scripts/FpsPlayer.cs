@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FpsPlayer : MonoBehaviour
 {
-
+    #region Variabler
     public float MouseSense, Pitch, Yaw, MoveSpeed;
     public GameObject Camera;
     public Transform View;
@@ -13,8 +13,16 @@ public class FpsPlayer : MonoBehaviour
     public float JumpHeight = 1.5f;
     public GameObject InventoryPanel;
     public bool LaserGunPickedUp, BulletGunPickedUp;
+    private bool IsCrouching;
+    private Vector3 standingCameraPosition;
+
+    public float crouchAmount = 0.5f;
+
+    #endregion
     private void Start()
     {
+        standingCameraPosition = Camera.transform.localPosition;
+
         if (InventoryPanel != null)
             InventoryPanel.SetActive(false);
         EquipWeapon();
@@ -105,6 +113,26 @@ public class FpsPlayer : MonoBehaviour
         if (LG != null)
             LG.gameObject.SetActive(CurrentWeapon == Weapon.LaserGun);
     }
+
+    public void PlayerCrouch()
+    {
+        if (!Input.GetKeyDown(KeyCode.C))
+            return;
+
+        IsCrouching = !IsCrouching;
+
+        if(IsCrouching)
+        {
+            Camera.transform.localPosition =
+                standingCameraPosition - Vector3.up * crouchAmount;
+            return;
+        }
+        else
+        {
+            Camera.transform.localPosition = standingCameraPosition;
+            return;
+        }
+    }
     void  Controls()
     {
         ToggleInventory();
@@ -116,6 +144,7 @@ public class FpsPlayer : MonoBehaviour
         Jump();
         ToggleWeapon();
         EquipWeapon();
+        PlayerCrouch();
     }
 
     private void Update()
