@@ -15,7 +15,8 @@ public class Inventory : MonoBehaviour
             items.Add(item, 0);
 
         items[item] += amount;
-        InvenUI.UpdateItem(item, items[item]);
+        if (InvenUI != null)
+            InvenUI.UpdateItem(item, items[item]);
         return true;
            
     }

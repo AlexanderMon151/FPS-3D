@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class LaserGun : MonoBehaviour
 {
     public Transform Muzzle;
@@ -19,7 +19,6 @@ public class LaserGun : MonoBehaviour
         Beam.positionCount = 2;
         Beam.widthMultiplier = 0.03f;
         Beam.enabled = false;
-        gameObject.SetActive(false);
     }
     public void Fire()
     {
@@ -28,20 +27,45 @@ public class LaserGun : MonoBehaviour
 
         NextFireTime = Time.time + FireCoolDown;
         Vector3 origin = Muzzle.position;
-        Vector3 direction = Muzzle.forward;
+        // Aim at the crosshair while keeping the beam attached to the muzzle.
+        UnityEngine.Camera aimCamera = Camera.main;
+        Ray aimRay = aimCamera != null
+            ? aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f))
+            : new Ray(origin, Muzzle.forward);
+        Vector3 target = aimRay.GetPoint(Range);
+        if (TryHit(aimRay, Range, out RaycastHit aimHit))
+            target = aimHit.point;
+        Vector3 direction = (target - origin).normalized;
         Vector3 endPoint = origin + direction * Range;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit,
-            Range, HitMask, QueryTriggerInteraction.Ignore))
+        if (TryHit(new Ray(origin, direction), Range, out RaycastHit hit))
         {
             endPoint = hit.point;
             Debug.Log($"LASER HIT: {hit.collider.name}", hit.collider);
         }
 
-        Beam.SetPosition(9, origin);
+        Beam.SetPosition(0, origin);
         Beam.SetPosition(1, endPoint);
         Beam.enabled = true;
         BeamHideTime = Time.time + BeamDuration;
+    }
+
+    private bool TryHit(Ray ray, float distance, out RaycastHit nearest)
+    {
+        nearest = default;
+        bool found = false;
+        foreach (RaycastHit hit in Physics.RaycastAll(ray, distance, HitMask,
+                     QueryTriggerInteraction.Ignore))
+        {
+            if (hit.transform.IsChildOf(transform.root))
+                continue;
+            if (!found || hit.distance < nearest.distance)
+            {
+                nearest = hit;
+                found = true;
+            }
+        }
+        return found;
     }
 
     public void Aim()
@@ -63,7 +87,8 @@ public class LaserGun : MonoBehaviour
 
         private void OnDisable()
         {
-            Beam.enabled = false;
+            if (Beam != null)
+                Beam.enabled = false;
         }
 }
 

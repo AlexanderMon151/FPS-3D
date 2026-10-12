@@ -11,7 +11,7 @@ public class ItemPickUp : MonoBehaviour
         if (Collected)
             return;
 
-        Inventory inv = other.GetComponent<Inventory>();
+        Inventory inv = other.GetComponentInParent<Inventory>();
 
         if (inv == null)
             return;
@@ -24,6 +24,7 @@ public class ItemPickUp : MonoBehaviour
             return;
         }
 
+        gameObject.SetActive(false);
         Destroy(gameObject);
     }
 }

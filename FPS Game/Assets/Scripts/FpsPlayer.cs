@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class FpsPlayer : MonoBehaviour
 {
@@ -14,6 +13,12 @@ public class FpsPlayer : MonoBehaviour
     public float JumpHeight = 1.5f;
     public GameObject InventoryPanel;
     public bool LaserGunPickedUp, BulletGunPickedUp;
+    private void Start()
+    {
+        if (InventoryPanel != null)
+            InventoryPanel.SetActive(false);
+        EquipWeapon();
+    }
     void Look()
     {
         Yaw += Input.GetAxis("Mouse X") * MouseSense;
@@ -66,8 +71,8 @@ public class FpsPlayer : MonoBehaviour
     }
     void ToggleInventory()
     {
-        if(Input.GetKeyDown(KeyCode.I))
-        InventoryPanel.SetActive(InventoryPanel.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.I) && InventoryPanel != null)
+            InventoryPanel.SetActive(!InventoryPanel.activeSelf);
     }
 
     void ToggleWeapon()
@@ -95,27 +100,20 @@ public class FpsPlayer : MonoBehaviour
 
     public void EquipWeapon()
     {
-        if(CurrentWeapon == Weapon.BulletGun)
-        {
-            LG.gameObject.SetActive(false);
-            BG.gameObject.SetActive(true);
-            return;
-        }
-        if(CurrentWeapon == Weapon.LaserGun)
-        {
-            LG.gameObject.SetActive(true);
-            BG.gameObject.SetActive(false);
-            return;
-
-        }
+        if (BG != null)
+            BG.gameObject.SetActive(CurrentWeapon == Weapon.BulletGun);
+        if (LG != null)
+            LG.gameObject.SetActive(CurrentWeapon == Weapon.LaserGun);
     }
     void  Controls()
     {
+        ToggleInventory();
+        if (InventoryPanel != null && InventoryPanel.activeSelf)
+            return;
         Look();
         Shoot();
         Move();
         Jump();
-        ToggleInventory();
         ToggleWeapon();
         EquipWeapon();
     }

@@ -8,12 +8,9 @@ public class WeaponPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player")
+        FpsPlayer p = other.GetComponentInParent<FpsPlayer>();
+        if (p != null)
         {
-            FpsPlayer p = other.GetComponent<FpsPlayer>();
-
-            if (p == null)
-                return;
 
             if (WhatWeaponAmI == Weapon.BulletGun)
             {

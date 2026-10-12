@@ -13,6 +13,11 @@ public class InventoryUI : MonoBehaviour
         if (!Slots.ContainsKey(item))
         {
             InventorySlotUI slot = Instantiate(SlotPreFab, SlotsParent);
+            // UI prefabs must stay in the same plane as their Canvas.
+            RectTransform rect = slot.GetComponent<RectTransform>();
+            Vector3 position = rect.anchoredPosition3D;
+            position.z = 0f;
+            rect.anchoredPosition3D = position;
             Slots.Add(item, slot);
         }
 
